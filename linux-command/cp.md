@@ -9,7 +9,10 @@
 
 ###  语法
 
-	cp(选项)(参数)
+	cp [OPTION]... [-T] SOURCE DEST
+        cp [OPTION]... SOURCE... DIRECTORY
+        cp [OPTION]... -t DIRECTORY SOURCE...
+
 
 ###  选项
 	-a：此参数的效果和同时指定"-dpR"参数相同；
