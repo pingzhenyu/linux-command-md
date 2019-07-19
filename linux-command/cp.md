@@ -10,8 +10,8 @@
 ###  语法
 
 	cp [OPTION]... [-T] SOURCE DEST
-        cp [OPTION]... SOURCE... DIRECTORY
-        cp [OPTION]... -t DIRECTORY SOURCE...
+	cp [OPTION]... SOURCE... DIRECTORY
+	cp [OPTION]... -t DIRECTORY SOURCE...
 
 
 ###  选项
@@ -30,53 +30,58 @@
 
 ###  参数
 
-*   源文件：制定源文件列表。默认情况下，cp命令不能复制目录，如果要复制目录，则必须使用`-R`选项；
+*   源文件：制定源文件列表。默认情况下，cp命令不能复制目录，如果要复制目录，则必须使用 -r 选项；
 *   目标文件：指定目标文件。当“源文件”为多个文件时，要求“目标文件”为指定的目录。
 
 ###  实例
 
-
+###  目录结构
+	../test/
+	├── dir2
+	├── dir3
+	│   ├── dir1
+	│   ├── file2.txt
+	│   ├── log2
+	│   └── log2~
+	└── log1
 ### 1. 复制文件到指定目录
 	
-	目标文件存在时，会覆盖,加上参数 -i会询问是否覆盖，-f强制覆盖
-	# cp log1 dir2
+	# cp log1 dir2 （目标文件存在时，会覆盖,加上参数 -i会询问是否覆盖，-f强制覆盖）
 	
-	将指定文件复制到当前目录
-	# cp ../mary/homework/assign .
+### 2.	将指定文件复制到当前目录，当前在dir2目录
+	# cp ../dir3/log2 .
 	
-	将文件file复制到目录/usr/men/tmp下，并改名为file1
-	cp file /usr/men/tmp/file1
+### 3.	将文件log2复制到目录/usr/local/src下，并改名为file1
+	cp log2 /usr/local/src/file1
 
-	将目录/usr/men下的所有文件及其子目录复制到目录/usr/zh中
-	cp -r /usr/men /usr/zh
+### 4.	将目录/etc目录下的所有文件及其子目录复制到目录dir2中
+	cp -r /etc dir2
 
-	交互式地将目录/usr/men中的以m打头的所有.c文件复制到目录/usr/zh中
-	cp -i /usr/men m*.c /usr/zh
-### 2. 复制整个目录
+### 5. 复制整个目录
 	# cp -a dir3 dir2
-	# cp -t dir2 dir3
-	
-### 3. 复制的 log.log 建立一个连结档 log_link.log
+
+### 6. 复制的 log.log 建立一个连结档 log_link.log
 	# cp -s log1 log1_link
 
-### 4. 递归强制复制目录到指定目录中覆盖已存在文件
-	# cp -rfb ./* ../backup
-	将当前目录下所有文件，复制到当前目录的兄弟目录 backup 文件夹中
-### 5. 拷贝目录下的隐藏文件如 .babelrc
+### 7. 若 ~/.bashrc 比 dir2/bashrc 新才复制过来
+	# cp -u ~/.bashrc dir2/bashrc
+	-u 是在目标文件与来源文件有差异时，才会复制的。
+	
+### 8. 拷贝目录下的隐藏文件如 .babelrc
 	cp -r aaa/.* ./bbb
 	将 aaa 目录下的，所有`.`开头的文件，复制到 bbb 目录中。
 
 	cp -a aaa ./bbb/ 
 	记住后面目录最好的'/' 带上 `-a` 参数
-### 6. 将当前目录中的所有内容备份到/backup（假设该目录存在）目录下，并保持源文件的符号连接链接。
+### 9. 将当前目录中的所有内容备份到/backup（假设该目录存在）目录下，并保持源文件的符号连接链接。
 	由于要备份当前目录中的所有内容，当前目录下可能包含目录，因此应该开启-r选项，备份子目录下的所有内容。	
 	同时要求保持源文件的链接，所以开启-a
 	#	cp –iar . /backup
-### 7. 备份当前目录下的一文件abc，到目录/backup/study目录中
+### 10. 备份当前目录下的一文件abc，到目录/backup/study目录中
 	#	cp -i abc /backup/study
-### 8.	备份链接文件，并保持源文件的属性和链接
+### 11.	备份链接文件，并保持源文件的属性和链接
 	假设当前目录下存在一链接到一个目录的链接文件lndir，备份到/backup目录下并重命名为lndir.backup
 	#	cp -iav lndir /bacup/lndir.backup
-### 9.备份一文件到目标目录只保持其属主和访问权限属性
+### 12.备份一文件到目标目录只保持其属主和访问权限属性
 	假设当前目录下存在一文件abc，将其备份到目录/backup下并保持属主和访问权限
 	#	cp -iv --preserve=mode,ownership abc /backu
