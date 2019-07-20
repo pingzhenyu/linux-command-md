@@ -16,7 +16,9 @@ mv命令可以用来将源文件移至一个目标文件中，或将一组文件
 
 ###  语法
 
-	mv(选项)(参数)
+	mv [OPTION]... [-T] SOURCE DEST
+	mv [OPTION]... SOURCE... DIRECTORY
+	mv [OPTION]... -t DIRECTORY SOURCE...
 
 ###  选项
 
@@ -37,61 +39,52 @@ mv命令可以用来将源文件移至一个目标文件中，或将一组文件
 
 ###  实例
 
-
-###1. 显示当前目录所在路径.
-	# pwd
+###  目录结构
 	# tree -L 2
-###2. 多层连接文件时，显示所有连接文件最终指向的文件全路径
-	/root目录下面有个dir1目录，test连接文件指向dir1目录，/opt目录下面有一个test连接文件，指向/root/test连接文件，
-	通过cd命令进入/opt/test，pwd默认，只显示连接文件的全路径
-	# pwd -P
+	../test/
+	├── test1
+	├── test2
+	│   ├── log
+	│   ├── file2.txt
+	│   ├── log2
+	│   └── log2~
+	└── log1
 
 
-### 1. 将目录`/usr/men`中的所有文件移到当前目录（用`.`表示）中
-	# mv /usr/men/* .
+### 1. 将test2目录中的所有文件移到当前目录中
+	# mv test2/* .
 
-### 2. 移动文件
-
-	# mv file_1.txt /home/office/
+### 2. 移动文件log1到test1目录
+	# mv log1 test1/
 
 ### 3. 移动多个文件
 
-	# mv file_2.txt file_3.txt file_4.txt /home/office/
-	# mv *.txt /home/office/
-
+	# mv log2 log2~ test1/
 
 ### 4. 移动目录
- 	# mv directory_1/ /home/office/
+ 	# mv test1/ test2/
 
 
 ### 5. 重命名文件或目录
-
-	# mv file_1.txt file_2.txt # 将文件file_1.txt改名为file_2.txt
+	# mv log1 file_2.txt 
+	# 将文件log1改名为file_2.txt
 
 
 ### 6. 重命名目录
-
-	# mv directory_1/ directory_2/
+	# mv test1/ test3/
 
 
 ### 7. 打印移动信息
-
-	# mv -v *.txt /home/office
+	# mv -v *.txt test3/
 
 
 ### 8. 提示是否覆盖文件
-
-	# mv -i file_1.txt /home/office
+	# mv -i file_1.txt test3/
 
 
 ### 9. 源文件比目标文件新时才执行更新
 
-	# mv -uv *.txt /home/office
-
-
-### 10. 不要覆盖任何已存在的文件
-
-	# mv -vn *.txt /home/office
+	# mv -uv file_1.txt test3/
 
 
 ### 11. 复制时创建备份
