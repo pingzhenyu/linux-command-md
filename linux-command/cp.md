@@ -56,11 +56,12 @@
 
 ### 4.	将目录/etc目录下的所有文件及其子目录复制到目录dir2中
 	cp -r /etc dir2
-
+        -R, -r, --recursive copy directories recursively
 ### 5. 复制整个目录
-	# cp -a dir3 dir2
-
-### 6. 复制的 log.log 建立一个连结档 log_link.log
+	# cp -a dir3 dir2  
+	-a, --archive same as -dR --preserve=all
+        -d     same as --no-dereference --preserve=links
+### 6. 为log1文件建立一个链接文件log_link.log
 	# cp -s log1 log1_link
 
 ### 7. 若 ~/.bashrc 比 dir2/bashrc 新才复制过来
