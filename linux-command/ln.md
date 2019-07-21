@@ -13,18 +13,19 @@ Linux文件系统中，有所谓的链接(link)，我们可以将其视为档案
 
 ###  软链接
 1. 软链接，以路径的形式存在。类似于Windows操作系统中的快捷方式
-1. 软链接可以 跨文件系统 ，硬链接不可以
-1. 软链接可以对一个不存在的文件名进行链接
-1. 软链接可以对目录进行链接
+2. 软链接可以跨文件系统，硬链接不可以
+3. 软链接可以对一个不存在的文件名进行链接
+4. 软链接可以对目录进行链接
 ###  硬链接
-1. 硬链接，以文件副本的形式存在。但不占用实际空间。
-1. 不允许给目录创建硬链接
-1. 硬链接只有在同一个文件系统中才能创建
+1. 硬链接，以文件副本的形式存在，但不占用实际空间
+2. 不允许给目录创建硬链接
+3. 硬链接只有在同一个文件系统中才能创建
 
 ###  语法
-
-	ln [选项]... [-T] 目标 链接名
-
+	ln [OPTION]... [-T] TARGET LINK_NAME (1st form)
+	ln [OPTION]... TARGET (2nd form)
+	ln [OPTION]... TARGET... DIRECTORY (3rd form)
+	ln [OPTION]... -t DIRECTORY TARGET... (4th form)
 ###  选项
 
     --backup[=CONTROL]  为每个已存在的目标文件创建备份文件
@@ -49,130 +50,42 @@ Linux文件系统中，有所谓的链接(link)，我们可以将其视为档案
 ###  实例
 
 
-### 1. 给2018.log创建一个名为link2018的软链接
-	# ln -s 2018.log  link2018
-	修改源文件2018.log内容，其软链接内容会同步修改
-### 2. 为2018.log 创建一个硬链接ln2018
-	# ln 2018.log  ln2018
-	为2018.log创建硬链接ln2018，2018.log与ln2018的各项属性相同
-	修改源文件2018.log内容，其软硬链接内容均会同步修改
+### 1. 创建指向文件的软链接
+	# ln -s log  hardlink-log
+	修改源文件log内容，其软链接内容会同步修改
+### 2. 创建指向文件的硬链接
+	# ln log  symboliclink-log
+	为log创建硬链接symboliclink-log，hardlink-log与symboliclink-log的各项属性相同
+	修改源文件log内容，其软硬链接内容均会同步修改
 ### 3. 接上面两实例，链接完毕后，删除和重建链接原文件
 	#  ls
-	2018.log  link2018  ln2018
-	#  ll
-	总用量 20
-	drwxrwxr-x 3 hc hc 4096 10月 23 12:04 ./
-	drwxrwxr-x 6 hc hc 4096 10月 19 18:22 ../
-	-rw-r--r-- 2 hc hc   11 10月 23 12:04 2018.log
-	drwxrwxr-x 2 hc hc 4096 10月 18 17:42 .idea/
-	lrwxrwxrwx 1 hc hc    8 10月 23 12:00 link2018 -> 2018.log
-	-rw-r--r-- 2 hc hc   11 10月 23 12:04 ln2018
-	#  rm -rf 2018.log 
-	#  ll
-	总用量 16
-	drwxrwxr-x 3 hc hc 4096 10月 23 12:57 ./
-	drwxrwxr-x 6 hc hc 4096 10月 19 18:22 ../
-	drwxrwxr-x 2 hc hc 4096 10月 18 17:42 .idea/
-	lrwxrwxrwx 1 hc hc    8 10月 23 12:00 link2018 -> 2018.log
-	-rw-r--r-- 1 hc hc   11 10月 23 12:04 ln2018
-	#  touch 2018.log
-	#  ll
-	总用量 16
-	drwxrwxr-x 3 hc hc 4096 10月 23 12:57 ./
-	drwxrwxr-x 6 hc hc 4096 10月 19 18:22 ../
-	-rw-r--r-- 1 hc hc    0 10月 23 12:57 2018.log
-	drwxrwxr-x 2 hc hc 4096 10月 18 17:42 .idea/
-	lrwxrwxrwx 1 hc hc    8 10月 23 12:00 link2018 -> 2018.log
-	-rw-r--r-- 1 hc hc   11 10月 23 12:04 ln2018
-	#  vim 2018.log 
-	#  cat 2018.log 
-	2018log日志
-	#  cat link2018 
-	2018log日志
-	#  cat ln2018 
-	我是log1
+	log  hardlink-log  symboliclink-log
+	#  rm -rf log 
+	#  ls -l
+	#  touch log
+	#  ls -l
+	#  vim log 
+	#  cat log 
+	#  cat hardlink-log 
+	#  cat symboliclink-log 
 	
-	源文件被删除后，并没有影响硬链接文件；软链接文件在centos系统下不断的闪烁，提示源文件已经不存在
-	重建源文件后，软链接不在闪烁提示，说明已经链接成功，找到了链接文件系统；
+	源文件被删除后，并没有影响硬链接文件；软链接文件会提示源文件已经不存在
+	重建源文件后，软链接会重新链接成功，找到链接文件；
 	重建后，硬链接文件并没有受到源文件影响，硬链接文件的内容还是保留了删除前源文件的内容，说明硬链接已经失效
-### 4. 将文件链接到目录中
-	#  ls
-	2018.log  link2018  ln2018
-	#  mkdir test
-	#  ls
-	2018.log  link2018  ln2018  test
-	#  ln 2018.log test
-	#  ls
-	2018.log  link2018  ln2018  test
-	#  cd test/
-	#  ls
-	2018.log
-	#  vi 2018.log 
-	#  cat 2018.log 
-	2018log日志,加1
-	#  cd ..
-	#  ls
-	2018.log  link2018  ln2018  test
-	#  cat 2018.log 
-	2018log日志,加1
-	#  ll
-	总用量 24
-	drwxrwxr-x 4 hc hc 4096 10月 23 13:31 ./
-	drwxrwxr-x 7 hc hc 4096 10月 23 13:30 ../
-	-rw-r--r-- 2 hc hc   19 10月 23 13:32 2018.log
-	drwxrwxr-x 2 hc hc 4096 10月 18 17:42 .idea/
-	lrwxrwxrwx 1 hc hc    8 10月 23 12:00 link2018 -> 2018.log
-	-rw-r--r-- 1 hc hc   11 10月 23 12:04 ln2018
-	drwxr-xr-x 2 hc hc 4096 10月 23 13:32 test/
+### 4.创建指向目录的软链接
+	# ln -s /root/test /home/log
+	# ls -l /home/
 	
-	在test目录中创建了2018.log的硬链接，修改test目录中的2018.log文件，同时也会同步到源文件
-### 5：给目录创建软链接
-
-	#  ll
-	总用量 28
-	drwxrwxr-x  7 hc hc 4096 10月 23 13:30 ./
-	drwxr-xr-x 23 hc hc 4096 10月 23 13:32 ../
-	drwxr-xr-x  9 hc hc 4096 10月 22 15:25 FreshOnline/
-	drwxrwxr-x  6 hc hc 4096 10月 19 19:07 FreshOnline_env/
-	drwxrwxr-x  4 hc hc 4096 10月 23 13:31 my_test/
-	drwxrwxr-x  4 hc hc 4096 10月 23 11:52 py3_test/
-	drwxr-xr-x  2 hc hc 4096 10月 23 13:30 test/
-	#  ln -sv /home/test  /home/mytest
-	'/home/mytest/my_test' -> '/home/test'
-	#  ll
-	总用量 28
-	drwxrwxr-x  7 hc hc 4096 10月 23 13:30 ./
-	drwxr-xr-x 23 hc hc 4096 10月 23 13:32 ../
-	drwxr-xr-x  9 hc hc 4096 10月 22 15:25 FreshOnline/
-	drwxrwxr-x  6 hc hc 4096 10月 19 19:07 FreshOnline_env/
-	drwxrwxr-x  4 hc hc 4096 10月 23 13:31 my_test/
-	drwxrwxr-x  4 hc hc 4096 10月 23 11:52 py3_test/
-	drwxr-xr-x  2 hc hc 4096 10月 23 13:38 test/
-	#  cd my_test/
-	#  ls
-	2018.log  link2018  ln2018  test
-	#  cd ..
-	#  ls
-	FreshOnline  FreshOnline_env  my_test  py3_test  test
-	#  cd test/
-	# ls
-	my_test
-	# cd my_test
-	# ls
-	2018.log  link2018  ln2018  test
-	# cd ..
-	# ls
-	my_test
-	# ll
-	总用量 8
-	drwxr-xr-x 2 hc hc 4096 10月 23 13:38 ./
-	drwxrwxr-x 7 hc hc 4096 10月 23 13:30 ../
-	lrwxrwxrwx 1 hc hc   32 10月 23 13:38 my_test -> /home/test/
-
-- 	目录只能创建软链接
-- 	目录创建链接必须用绝对路径，相对路径创建会不成功，会提示：符号连接的层数过多 这样的错误
-- 	使用原文件的绝对路径创建的软链接，不会随着软链接路径改动而失效！所以建议使用原文件绝对路径创建软链接。这时候的软链接才算得上是真正意义上相当于Windows的快捷方式，一旦生成处处可用
-- 	在链接目标目录中修改文件都会在源文件目录中同步变化
+### 5.给目录创建硬链接
+	# ln /root/go /home/go
+	目录只能创建软链接
+ 	目录创建链接必须用绝对路径，相对路径创建会不成功，会提示：符号连接的层数过多 这样的错误
+ 	在链接目标目录中修改文件都会在源文件目录中同步变化
+	
+### 6.	删除软链接和硬链
+	#  rm -rf /home/log
+	注意删除软链接目录时，目录后面不加“/”
+	
 ## 扩展知识  
 
 Linux具有为一个文件起多个名字的功能，称为链接。被链接的文件可以存放在相同的目录下，但是必须有不同的文件名，而不用在硬盘上为同样的数据重复备份。另外，被链接的文件也可以有相同的文件名，但是存放在不同的目录下，这样只要对一个目录下的该文件进行修改，就可以完成对所有目录下同名链接文件的修改。对于某个文件的各链接文件，我们可以给它们指定不同的存取权限，以控制对信息的共享和增强安全性。
@@ -196,9 +109,7 @@ Linux具有为一个文件起多个名字的功能，称为链接。被链接的
 
 符号链接也称为软链接，是将一个路径名链接到一个文件。这些文件是一种特别类型的文件。事实上，它只是一个文本文件（如图中的abc文件），其中包含它提供链接的另一个文件的路径名，如图中虚线箭头所示。另一个文件是实际包含所有数据的文件。所有读、写文件内容的命令被用于符号链接时，将沿着链接方向前进来访问实际的文件。
 
-!符号连接
-
-与硬链接不同的是，符号链接确实是一个新文件，当然它具有不同的I节点号；而硬链接并没有建立新文件。
+符号连接与硬链接不同的是，符号链接确实是一个新文件，当然它具有不同的I节点号；而硬链接并没有建立新文件。
 
 符号链接没有硬链接的限制，可以对目录文件做符号链接，也可以在不同文件系统之间做符号链接。
 
