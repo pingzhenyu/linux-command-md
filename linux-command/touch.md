@@ -33,11 +33,11 @@
 	# touch test1
 	# touch log1 log2
 	# touch test-{1..5}.txt
-	
-### 2. 利用其他文件的时间属性设置新的文件。
-	当前目录下，有一文件log1，利用该文件的时间属性设置新创建文件“log2”的时间属性
-	# touch -r log1 log2
 
 ### 2. 创建文件，并用stat查看文件的属性状态信息
 	 # touch file1.txt
-	 # stat file.txt
+	 # stat file.txt	
+###  3. 利用其他文件的时间属性设置新的文件。
+	当前目录下，有一文件log1，利用该文件的时间属性设置新创建文件“log2”的时间属性
+	# touch -r log1 log2
+
