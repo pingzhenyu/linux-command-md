@@ -30,28 +30,28 @@ rm 命令 可以删除一个目录中的一个或多个文件或目录，也可�
 ### 1.  rm 命令删除文件
 
 	rm 文件1 文件2 ...
-	# rm testfile.txt
+	# rm test1.txt
 
 ### 2.   rm 命令删除目录
 
 rm -r [目录名称] -r 表示递归地删除目录下的所有文件和目录。 -f 表示强制删除
 
-	# rm -rf testdir
-	# rm -r testdir
+	# rm -rf test2
+	# rm -r test1
 	# rm -r *
 应注意，这样做是非常危险的!
 
 ### 3.  删除操作前有确认提示
 
 rm -i [文件/目录]
-交互式删除当前目录下的文件test和example
+交互式删除当前目录下的文件log1和log2
 
-	# rm -i test example
-	Remove test ?n（不删除文件test)
-	Remove example ?y（删除文件example)
+	# rm -i log1 log2
+	Remove log1 ?n（不删除文件log1)
+	Remove log2 ?y（删除文件log2)
 	删除当前目录下除隐含文件外的所有文件和子目录
 
-	# rm -r -i testdir
+	# rm -r -i test3
 	rm 忽略不存在的文件或目录
 
 ### 4. 强行删除file，系统不再提示 
