@@ -51,11 +51,11 @@ Linux文件系统中，有所谓的链接(link)，我们可以将其视为档案
 
 
 ### 1. 创建指向文件的软链接
-	# ln -s log  hardlink-log
+	# ln -s log  symboliclink-log
 	修改源文件log内容，其软链接内容会同步修改
 ### 2. 创建指向文件的硬链接
-	# ln log  symboliclink-log
-	为log创建硬链接symboliclink-log，hardlink-log与symboliclink-log的各项属性相同
+	# ln log  hardlink-log
+	hardlink-log与symboliclink-log的各项属性相同
 	修改源文件log内容，其软硬链接内容均会同步修改
 ### 3. 接上面两实例，链接完毕后，删除和重建链接原文件
 	#  ls
