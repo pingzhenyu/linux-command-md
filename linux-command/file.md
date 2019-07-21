@@ -33,20 +33,21 @@ file(选项)(参数)
 
 ### 1.显示文件类型
 
+```shell
+    # file install.log
+    install.log: UTF-8 Unicode text
 
-  # file install.log
-  install.log: UTF-8 Unicode text
-
-  # file -b install.log      <== 不显示文件名称
-  UTF-8 Unicode text
-
+    # file -b install.log      <== 不显示文件名称
+    UTF-8 Unicode text
+```
 
 ### 2.显示符号链接的文件类型
 
 
-  ls -l /var/mail
-  lrwxrwxrwx 1 root root 10 08-13 00:11 /var/mail -> spool/mail
+```shell
+    ls -l /var/mail
+    lrwxrwxrwx 1 root root 10 08-13 00:11 /var/mail -> spool/mail
 
-  file /var/mail
-  /var/mail: symbolic link to `spool/mail'
-
+    file /var/mail
+    /var/mail: symbolic link to `spool/mail'
+```
