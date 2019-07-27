@@ -167,13 +167,13 @@ Linux下find命令在目录结构中搜索文件，并执行指定的操作。Li
 	-type l：查找软链接文件
 	
 	1：在/etc目录下查找所有的目录
-	# find /etc -type d -print  
+	# find /etc -type d   
 
 	2：在当前目录下查找除目录以外的所有类型的文件
-	# find . ! -type d -print  
+	# find . ! -type d  
 
 	3：在/etc目录下查找所有的符号链接文件
-	# find /etc -type l -print
+	# find /etc -type l 
 	
 
 	
@@ -186,7 +186,7 @@ Linux下find命令在目录结构中搜索文件，并执行指定的操作。Li
 
 	建立几个测试文件
 	# cd test/
-	# touch test[1,4]
+	# touch test{1..4}
 	# chmod 755 testl
 	# chmod 444 test2
 	# chmod 600 test3
