@@ -128,183 +128,43 @@ grep可用于shell脚本，因为grep通过返回一个状态值来说明搜索�
  	# grep -n \dir ls
 	\dir： 匹配包含以dir开头的单词的行
 	
+### 6. 任意一个字节 . 与重复字节 *，需要找出 gr？？p 的字串，亦即共有五个字节， 起头是 gr 而结束是 p 
+	# grep -n 'gr..p' ls.txt
+	. (小数点)：代表『一定有一个任意字节』的意思；
+	* (星号)：代表『重复前一个字符， 0 到无穷多次』的意思，为组合形态
 
-### 1. 查找指定进程
-	# ps -ef|grep uwsgi
+### 7. 匹配其前面的字符m次,找出两个到五个o的连续字串
+	修改ls.txt添加几个o
+	# grep -n 'o\{2,5\}' ls.txt
+	因为 { 与 } 的符号在 shell 是有特殊意义的，因此， 我们必须要使用字符\来让他失去特殊意义才行。
+
+
+### 8. 查询ls返回结果中的目录
+	# ls -l |grep "^d" 
+
+### 9. 查找指定进程
+	# ps -ef|grep sshd
 	除最后一条记录外，其他的都是查找出的进程；最后一条记录结果是grep进程本身，并非真正要找的进程。
 
-### 2. 查找指定进程时，不显示grep 本身进程
-	# ps aux | grep uwsgi | grep -v "grep"
-	# ps aux|grep [u]wsgi 
-	# ps aux|grep /[u]wsgi 
-
-### 3. 查找指定进程个数
-	# ps -ef|grep uwsgi -c
-	# ps -ef|grep -c uwsgi
-
-### 4. 从文件中读取关键词进行搜索
-	# cat 3.log | grep -f 4.log 
-
-	# cat 3.log 
-	1
-	2
-	3
-	# cat 4.log 
-	1
-	12
-	5
-	43
-	# cat 3.log | grep -f 4.log 
-	1
-	# cat 4.log | grep -f 3.log 
-	1
-	12
-	43
-	
-	cat 3.log | grep -f 4.log 从3.log文件中匹配出含有4.log中关键字的行并输出
-	cat 4.log | grep -f 3.log 从4.log文件中匹配出含有3.log中关键字的行并输出
-	如：4.log中的关键字有1,12,5,43四个，在3.log中无论是完全匹配还是部分匹配只能匹配到1，并输出
-	在 3.log中关键字为1,2,3, 所以在4.log中匹配3时，能完全匹配到含有1,2,3的行，并把匹配部分着色表示输出
-
-### 5. 从文件中读取关键词进行搜索 且显示行号
-	# cat 4.log | grep -nf 3.log
-	输出4.log文件中含有从3.log 文件中读取出的关键词的内容行，并显示每一行的行号,冒号（:）左边是行号，右边是匹配的内容
-
-### 6. 从文件中查找关键词
-	# grep "1" 4.log 
-	有无引号，或者单双引号 效果是一样的，但是加上引号可读性好一点。另外如果要查询带引号的内容，需要用\进行转义
-
-### 7. 从多个文件中查找关键词
-	# grep '1' 3.log 4.log 
-	多文件时，输出查询到的信息内容行时，会把文件的命名放在在行的最左边输出并且加上":"作为标示符分隔，
-	如果用了-n展示行号，则第二个：的左边是行号，最右边的是匹配内容
-
-### 8.找出以1开头的行内容
-	# cat 4.log |grep ^1
-### 9.找出非1开头的行内容
-	# cat 4.log |grep ^[^1]
-### 10.找出以3结尾的行内容
-	# cat 4.log |grep 3$
-### 11.在当前目录中，查找后缀有 log 字样的文件中包含 1 字符串的文件，并打印出该字符串的行
-	# grep 1 *log
-
-### 12 . 以递归的方式查找符合条件的文件
-	# grep -r 仅此一条 /home/hc
-	查找指定目录/home/hc 及其子目录（如果存在子目录的话）下所有文件中包含字符串"仅此一条"的文件，
-	并打印出该字符串所在行的内容
+### 10. 查找指定进程个数
+	# ps -ef|grep sshd -c
+	# ps -ef|grep -c sshd
 
 
 ###  grep 查找源码
 
-###  1. 递归查找并显示行号
-这个是最基本的查找了。
+###  11. 递归查找并显示行号
+	#  grep -rn memcpy
 
-grep -rn memcpy
+	在当前目录查找可以使用：
+	不指定目录：”grep -rn memcpy”
+	用”.“指定当前目录：”grep -rn memcpy .”
+	其实这两者查找结果一样，但在输出格式上是有区别的，具体留给你去比较好了。
 
-在当前目录查找可以使用：
-不指定目录：”grep -rn memcpy”
-用”.“指定当前目录：”grep -rn memcpy .”
-其实这两者查找结果一样，但在输出格式上是有区别的，具体留给你去比较好了。
+	#  grep -rni memcpy
 
-###  2. 查找不区分大小写
-grep -rni memcpy
+	选项”-i“或略大小写，这样除了匹配“memcpy”外，还可以匹配一些宏定义如”MEMCPY“和”Memcpy“等
 
-选项”-i“或略大小写，这样除了匹配“memcpy”外，还可以匹配一些宏定义如”MEMCPY“和”Memcpy“等
-
-###  3. 排除指定文件的搜索结果
-搜索结果的第一列会显示搜索结果位于哪个文件中，所以可以通过对搜索结果第一列的过滤来排除指定文件。
-
-例如：编译时生成的*.o.cmd文件中带了很多包含memcpy.h的行，如：
-
-可以在搜索结果中用反向匹配”-v“排除*.o.cmd文件的匹配：
-
-grep -rn memcpy | grep -v .o.cmd
-
-如果想排除多个生成文件中的匹配，包括”*.o.cmd，*.s.cmd，*.o，*.map“等，有两种方式：
-
-使用多个-v依次对上一次的结果进行反向匹配：
-
-grep -rn memcpy | grep -v .o.cmd | grep -v .s.cmd | grep -v .o | grep -v .map
-
-使用-Ev一次进行多个反向匹配搜索：
-grep -rn memcpy | grep -Ev '\.o\.cmd|\.s\.cmd|\.o|\.map'
-
-由于这里使用了正则表达式”-E“，所以需要用”\“将”.“字符进行转义
-
-另外，也可以使用”--exclude=GLOB“来指定排除某些格式的文件，如不在“*.cmd”，“*.o”和“*.map”中搜索：
-
-grep -rn --exclude=*.cmd --exclude=*.o --exclude=*.map memcpy
-
-跟“--exclude=GLOB”类似的用法有“--include=GLOB”，从指定的文件中搜索，如只在“*.cmd”，“*.o”和“*.map”中搜索：
-
-grep -rn --include=*.cmd --include=*.o --include=*.map memcpy
-
-“--include=GLOB”在不确定某些函数是否被编译时特别有用。 
-例如，不确定函数rpi_is_serial_active是否有被编译，那就查找“*.o”文件是否存在这个函数符号：
-
-grep -rn --include=*.o rpi_is_serial_active
-
-显然，从结果看，这个函数是参与了编译的，否则搜索结果为空。
-
-如果想知道函数rpi_is_serial_active最后有没有被链接使用，查询生成的u-boot*文件就知道了：
-
-grep -rn --include=u-boot* rpi_is_serial_active
-Binary file out/rpi_3_32b/u-boot matches
-
-可见u-boot文件中找到了这个函数符号。
-
-###  4. 不在某些指定的目录查找memcpy
-如果指定了u-boot编译的输出目录，例如输出到out，则可以直接忽略对out目录的搜索，如：
-
-grep -rn --exclude-dir=out memcpy
-
-忽略多个目录（“out”和“doc”）：
-
-grep -rn --exclude-dir=out --exclude-dir=doc memcpy
-
-###  5. 查找精确匹配结果
-通常的“memcpy”查找结果中会有一些这样的匹配：“MCD_memcpy”，“zmemcpy”，“memcpyl”，“memcpy_16”等，如果只想精确匹配整个单词，则使用-w选项：
-
-grep -rnw memcpy .
-
-###  6. 查找作为单词分界的结果
-“作为单次分界“这个表述不太准确，例如，希望“memcpy”的查找中，只匹配“MCD_memcpy”，“memcpy_16”，而不用匹配“zmemcpy”，“memcpyl”这样的结果，也就是memcpy以一个完整单词的形式出现。
-
-一般这种查询就需要结合正则表达式了，用正则表达式去匹配单词边界，例如：
-
-grep -rn -E "(\b|_)memcpy(\b|_)"
-
-关于正则表达式“(\b|_)memcpy(\b|_)”
-
-“\b“匹配单词边界
-“_“匹配单个下滑下
-所以上面的表达式可以匹配：memcpy，memcpy_xxx，xxx_memcpy和xxx_memcpy_xxx等模式。（可能匹配的还有函数memcpy_，_memcpy和_memcpy_）
-
-###  7. 查看查找结果的上下文
-想在结果中查看匹配内容的前后几行信息，例如想看宏定义“MEMCPY”匹配的前三行和后两行：
-
-ygu@guyongqiangx:u-boot-2016.09$ grep -rn -B 3 -A 2 MEMCPY
-1
-选项B/A： 
--B 指定显示匹配前（Before）的行数 
--A 指定显示匹配后（After）的行数
-
-###  8. grep和find配合进行查找
-find针是对文件级别的粗粒度查找，而grep则对文件内容的细粒度搜索。 
-所以grep跟find命令配合，用grep在find的结果中进行搜索，能发挥更大的作用，也更方便。
-
-例如，我想查找所有makefile类文件中对CFLAGS的设置。 
-makefile类常见文件包括makefile，*.mk，*.inc等，而且文件名还可能是大写的。
-
-可以通过find命令先找出makefile类文件，然后再从结果中搜索CFLAGS：
-
-ygu@guyongqiangx:u-boot-2016.09$ find . -iname Makefile -o -iname *.inc -o -iname *.mk | xargs grep -rn CFLAGS
-1
-这里由于涉及到find命令，所以整个查找看起来有点复杂了，也可以只用grep的--include=GLOB选项来实现：
-
-ygu@guyongqiangx:u-boot-2016.09$ grep -rn --include=Makefile --include=*.inc --include=*.mk CFLAGS .
-1
-比较上面的两个搜索结果，是一样的，但是有一点要注意：
-
-grep命令的--include=GLOB模式下，文件名是区分大小写的，而且没有方式指定忽略文件名大小写
-刚好这里搜索的Makefile只有首字母大写的形式，而不存在小写的makefile，所以这里碰巧是结果一致而已，否则需要指定更多的--include=GLOB参数。
+###  12. 查找精确匹配结果
+	如果只想精确匹配整个单词，则使用-w选项：
+	# grep -rnw cp
