@@ -104,7 +104,7 @@ grep可用于shell脚本，因为grep通过返回一个状态值来说明搜索�
 	准备测试文件
 	# man ls > ls.txt
 
-### 1. 搜寻指定字串author
+### 1. 搜寻指定字符串“author”
 	# grep author ls.txt
 	有无引号，或者单双引号 效果是一样的，但是加上引号可读性好一点。另外如果要查询带引号的内容，需要用\进行转义
 	# grep -n author ls.txt 显示行号；显示匹配字符“author”的行及行号
