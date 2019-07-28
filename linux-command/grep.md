@@ -110,18 +110,18 @@ grep可用于shell脚本，因为grep通过返回一个状态值来说明搜索�
 	# grep -n author ls.txt 显示行号；显示匹配字符“author”的行及行号
 	
 ### 2. 	利用中括号 [] 来搜寻集合字节
-        如果我想要搜寻 to 或 do 这两个单字时，可以发现他们有共同的 '?o'
+	如果我想要搜寻 to 或 do 这两个单字时，可以发现他们有共同的 '?o'
 	# grep -n [td]o ls.txt
 	[]里面不论有几个字节，都仅代表某一个字符！ 而如果想要搜寻到有‘oo’字符
 	# grep -n oo ls.txt
 	
 ### 3. 行首锚定，查询“ls”开始的行
-        先删除ls.txt文件前面几行的空格
+	先删除ls.txt文件前面几行的空格
 	# grep -n ^ls ls.txt
 	^ls: 匹配所有以ls开头的行
 	
 ### 4. 行尾锚定，查询“ls”开始的行
-        # grep -n contents$ ls.txt
+	# grep -n contents$ ls.txt
 	contents$: 匹配所有以contents结尾的行
 
 ### 5. 词首锚定，找出以dir开头的单词的行
