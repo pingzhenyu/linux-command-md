@@ -12,7 +12,7 @@ grep可用于shell脚本，因为grep通过返回一个状态值来说明搜索�
 
 ###  语法
 
-	cat(选项)(参数)
+	grep [OPTIONS] PATTERN [FILE...]
 
 ###  选项
 	-a --text  # 不要忽略二进制数据。
@@ -64,17 +64,6 @@ grep可用于shell脚本，因为grep通过返回一个状态值来说明搜索�
 	[:upper:] - 大写字母: 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z'
 	[:blank:] - 空字符: 空格键符 和 制表符
 	[:space:] - 空格字符: 制表符、换行符、垂直制表符、换页符、回车符和空格键符
-#### 匹配次数：
-用在要指定其出现的次数的字符的后面，用于限制其前面字符出现的次数；默认工作于贪婪模式；
-
-	*：匹配其前面的字符任意次；0,1,多次；
-	.*：匹配任意长度的任意字符
-	\?：匹配其前面的字符0次或1次；即其前面的字符是可有可无的；
-	\+：匹配其前面的字符1次或多次；即其面的字符要出现至少1次；
-	\{m\}：匹配其前面的字符m次；
-	\{m,n\}：匹配其前面的字符至少m次，至多n次；
-	\{0,n\}：至多n次
-	\{m,\}：至少m次
 
 #### 位置锚定：
 	^：行首锚定；用于模式的最左侧；
@@ -87,6 +76,20 @@ grep可用于shell脚本，因为grep通过返回一个状态值来说明搜索�
 	\<PATTERN\>：匹配完整单词；
 	单词：非特殊字符组成的连续字符（字符串）都称为单词；
 
+#### 匹配次数：
+用在要指定其出现的次数的字符的后面，用于限制其前面字符出现的次数；默认工作于贪婪模式；
+
+	*：匹配其前面的字符任意次；0,1,多次；
+	.*：匹配任意长度的任意字符
+	\?：匹配其前面的字符0次或1次；即其前面的字符是可有可无的；
+	\+：匹配其前面的字符1次或多次；即其面的字符要出现至少1次；
+	\{m\}：匹配其前面的字符m次；
+	\{m,n\}：匹配其前面的字符至少m次，至多n次；
+	\{0,n\}：至多n次
+	\{m,\}：至少m次
+
+
+
 ####  分组及引用
 	\(\)：将一个或多个字符捆绑在一起，当作一个整体进行处理；
 		    \(xy\)*ab
@@ -96,97 +99,35 @@ grep可用于shell脚本，因为grep通过返回一个状态值来说明搜索�
 
 
 
-###  grep命令常见用法
-	在文件中搜索一个单词，命令会返回一个包含 “match_pattern” 的文本行：
-	
-	grep match_pattern file_name
-	grep "match_pattern" file_name
-	在多个文件中查找：
-	
-	grep "match_pattern" file_1 file_2 file_3 ...
-	输出除之外的所有行 -v 选项：
-	
-	grep -v "match_pattern" file_name
-	标记匹配颜色 --color=auto 选项：
-	
-	grep "match_pattern" file_name --color=auto
-	使用正则表达式 -E 选项：
-	
-	grep -E "[1-9]+"
-	# 或
-	egrep "[1-9]+"
-	只输出文件中匹配到的部分 -o 选项：
-	
-	echo this is a test line. | grep -o -E "[a-z]+\."
-	line.
-	
-	echo this is a test line. | egrep -o "[a-z]+\."
-	line.
-	统计文件或者文本中包含匹配字符串的行数 -c 选项：
-	
-	grep -c "text" file_name
-	输出包含匹配字符串的行数 -n 选项：
-	
-	grep "text" -n file_name
-	# 或
-	cat file_name | grep "text" -n
-	
-	#多个文件
-	grep "text" -n file_1 file_2
-	打印样式匹配所位于的字符或字节偏移：
-	
-	echo gun is not unix | grep -b -o "not"
-	7:not
-	#一行中字符串的字符便宜是从该行的第一个字符开始计算，起始值为0。选项  **-b -o**  一般总是配合使用。
-	搜索多个文件并查找匹配文本在哪些文件中：
-	
-	grep -l "text" file1 file2 file3...
-	grep递归搜索文件
-	在多级目录中对文本进行递归搜索：
-	
-	grep "text" . -r -n
-	# .表示当前目录。
-	忽略匹配样式中的字符大小写：
-	
-	echo "hello world" | grep -i "HELLO"
-	# hello
-	选项 -e 制动多个匹配样式：
-	
-	echo this is a text line | grep -e "is" -e "line" -o
-	is
-	line
-	
-	#也可以使用 **-f** 选项来匹配多个样式，在样式文件中逐行写出需要匹配的字符。
-	cat patfile
-	aaa
-	bbb
-	
-	echo aaa bbb ccc ddd eee | grep -f patfile -o
-	在grep搜索结果中包括或者排除指定文件：
-	
-	# 只在目录中所有的.php和.html文件中递归搜索字符"main()"
-	grep "main()" . -r --include *.{php,html}
-	
-	# 在搜索结果中排除所有README文件
-	grep "main()" . -r --exclude "README"
-	
-	# 在搜索结果中排除filelist文件列表里的文件
-	grep "main()" . -r --exclude-from filelist
-	使用0值字节后缀的grep与xargs：
-	
-	# 测试文件：
-	echo "aaa" > file1
-	echo "bbb" > file2
-	echo "aaa" > file3
-	
-	grep "aaa" file* -lZ | xargs -0 rm
-	
-	# 执行后会删除file1和file3，grep输出用-Z选项来指定以0值字节作为终结符文件名（\0），
-     xargs -0 读取输入并用0值字节终结符分隔文件名，然后删除匹配文件，-Z通常和-l结合使用。
-	
 
 ###  实例
+	准备测试文件
+	# man ls > ls.txt
 
+### 1. 搜寻指定字串author
+	# grep author ls.txt
+	有无引号，或者单双引号 效果是一样的，但是加上引号可读性好一点。另外如果要查询带引号的内容，需要用\进行转义
+	# grep -n author ls.txt 显示行号；显示匹配字符“author”的行及行号
+	
+### 2. 	利用中括号 [] 来搜寻集合字节
+        如果我想要搜寻 to 或 do 这两个单字时，可以发现他们有共同的 '?o'
+	# grep -n [td]o ls.txt
+	[]里面不论有几个字节，都仅代表某一个字符！ 而如果想要搜寻到有‘oo’字符
+	# grep -n oo ls.txt
+	
+### 3. 行首锚定，查询“ls”开始的行
+        先删除ls.txt文件前面几行的空格
+	# grep -n ^ls ls.txt
+	^ls: 匹配所有以ls开头的行
+	
+### 4. 行尾锚定，查询“ls”开始的行
+        # grep -n contents$ ls.txt
+	contents$: 匹配所有以contents结尾的行
+
+### 5. 词首锚定，找出以dir开头的单词的行
+ 	# grep -n \dir ls
+	\dir： 匹配包含以dir开头的单词的行
+	
 
 ### 1. 查找指定进程
 	# ps -ef|grep uwsgi
