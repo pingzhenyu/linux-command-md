@@ -160,7 +160,7 @@ grep可用于shell脚本，因为grep通过返回一个状态值来说明搜索�
 	不指定目录：”grep -rn memcpy”
 	用”.“指定当前目录：”grep -rn memcpy .”
 	其实这两者查找结果一样，但在输出格式上是有区别的，具体留给你去比较好了。
-
+ 	-r: 逐层遍历目录查找
 	#  grep -rni memcpy
 
 	选项”-i“或略大小写，这样除了匹配“memcpy”外，还可以匹配一些宏定义如”MEMCPY“和”Memcpy“等
