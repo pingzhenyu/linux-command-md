@@ -9,7 +9,7 @@
 
 ###  语法
 
-	patch(选项)(参数)
+	patch [options] [originalfile [patchfile]]
 
 ###  选项
 
@@ -45,35 +45,13 @@
 
 ###  实例
 
-### 1.以统一格式显示两个C语言代码的比较结果。
 
-	#	diff -u test.c tst/test.c
-	--- test.c	2014-12-25 14:09:35.150670280 +0800
-	+++ tst/test.c	2014-12-25 14:07:50.966670708 +0800
-	@@ -28,9 +28,13 @@
-	 	{
-	 		return -1;
-	 	}
-	+	memset(line,0,uLen);
-	 	
-	 	if(fread(line,sizeof(char),uLen,sFile) != uLen)     //读取原文件内容，如果文件很大，请分块读取
-	 	{
-	+		printf("updatefile:fopen error");
-	+		fclose(sFile);
-	+		free(line);
-	 		return -1;
-	 	}
-	
-	补丁头：以---/+++开头的两行，用来表示要打补丁的文件；其中---开头的表示旧文件，+++开头的表示新文件。
-	一个补丁文件中可能包含多个---/+++开头的节，每一个节用来打一个补丁。
-	快：补丁中需要修改的地方。通常以@@开始，快得第一列+号表示这一行是需要增加的，-号表示这一行是需要删除的。
+### 1.使用diff创建单个文件的补丁文件
 
-### 2.使用diff创建单个文件的补丁文件
-
-	#	diff -uN test.c tst/test.c>test.patch
+	#	diff -uN test.c tst/test.c > test.patch
 	test.patch文件记录了tst/test.c文件与原有test.c文件的差异。
-### 3.为单个文件升级。
+### 2.为单个文件升级。
 	为单个文件升级有两种方法，一是根据补丁文件升级，另一种是在命令行直接指明要修补的文件和文件补丁。在命令提示符下输入：
 	#	patch -p0 test.c test.patch          //源文件与补丁文件在当前目录下
-	#	patch -p0 <test.patch                 //patch读取补丁文件内容，自动搜索文件
+	#	patch -p0 < test.patch                 //patch读取补丁文件内容，自动搜索文件
 
