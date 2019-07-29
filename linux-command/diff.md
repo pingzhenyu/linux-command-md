@@ -9,7 +9,7 @@
 
 ###  语法
 
-	diff(选项)(参数)
+	diff [OPTION]... FILES
 
 ###  选项
 
