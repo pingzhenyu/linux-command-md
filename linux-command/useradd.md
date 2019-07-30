@@ -35,13 +35,10 @@ useradd命令 用于Linux中创建的新的系统用户。useradd可用来建立
 
 ###  实例
 
-### 1.	创建一个账户为“testuser”的用户，shell提示符下输入：
-	#	useradd testuser
-	查找/etc/passwd文件中有关“testuser”用户的信息。
-	#	cat /etc/passwd | grep testuser
+### 1.	创建一个账户为testuser的用户
+	# useradd testuser 查找/etc/passwd文件中有关“testuser”用户的信息。
+	# cat /etc/passwd | grep testuser
 
-### 2.	创建一个名为adminnew的系统账户，配置其登录目录为/home/admin，命令如下：
-	#	useradd -r -d /home/admin adminnew
-	
-	命令执行后，执行以下命令查看创建是否成功。
-	#	cat /etc/passwd | grep adminnew
+### 2.	创建一个名为adminnew的系统账户，配置其登录目录为/home/admin
+	# useradd -r -d /home/admin adminnew 命令执行后，执行以下命令查看创建是否成功。
+	# cat /etc/passwd | grep adminnew
