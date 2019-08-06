@@ -1,17 +1,15 @@
 ## useradd ##
 
-创建的新的系统用户
+建立用户帐号
 
 ### 补充说明 ###
 
-useradd命令 用于Linux中创建的新的系统用户。useradd可用来建立用户帐号。帐号建好之后，再用passwd设定帐号的密码．而可用userdel删除帐号。使用useradd指令所建立的帐号，实际上是保存在/etc/passwd文本文件中。
-
-在Slackware中，adduser指令是个script程序，利用交谈的方式取得输入的用户帐号资料，然后再交由真正建立帐号的useradd命令建立新用户，如此可方便管理员建立用户帐号。在Red Hat Linux中， adduser命令 则是useradd命令的符号连接，两者实际上是同一个指令。
+useradd命令用于建立用户帐号，帐号建好之后，需用passwd设定帐号的密码。使用useradd指令所建立的帐号，实际上是保存在/etc/passwd文本文件中。可用userdel删除帐号。
 
 
 ###  语法
 
-	useradd(选项)(参数)
+	useradd [options] LOGIN
 
 ###  选项
 
@@ -39,6 +37,6 @@ useradd命令 用于Linux中创建的新的系统用户。useradd可用来建立
 	# useradd testuser 查找/etc/passwd文件中有关“testuser”用户的信息。
 	# cat /etc/passwd | grep testuser
 
-### 2.	创建一个名为adminnew的系统账户，配置其登录目录为/home/admin
-	# useradd -r -d /home/admin adminnew 命令执行后，执行以下命令查看创建是否成功。
-	# cat /etc/passwd | grep adminnew
+### 2.	创建一个名为admin的系统账户，配置其登录目录为/home/admin
+	# useradd -r -d /home/admin admin 命令执行后，执行以下命令查看创建是否成功。
+	# cat /etc/passwd | grep admin
