@@ -80,60 +80,32 @@ linux文件的用户权限的分析图
 ###  实例
 
 ### 1. 增加文件所有者可执行权限
-	# ls -l log1
-	-rw-r--r--. 2 root root   0 Nov 22 03:54 log1
+	
 	# chmod u+x log1
-	# ll log1
-	-rwxr-xr-x. 2 root root   0 Nov 22 03:54 log1
-
-	　　即设定文件log1的属性为：文件属主（u） 增加执行权限；与文件属主同组用户（g）
-       增加执行权限；其他用户（o） 增加执行权限。
+	
 
 ### 2. 同时修改不同用户权限，文件所有者与文件所属组增加写权限，其他用户删除可执行权限
 
-	# ls -l log1
-	-rwxr-xr-x. 2 root root   0 Nov 22 03:54 log1
 	# chmod ug+w,o-x log1
-	# ll log1
-	-rwxrwxr--. 2 root root   0 Nov 22 03:54 log1
-	　
+
 
 ### 3. 删除所有用户的可执行权限
 
-	# ll log1
-	-rwxrwxr--. 2 root root 0 Nov 22 03:54 log1
 	# chmod a-x log1
-	# ll log1
-	-rw-rw-r--. 2 root root 0 Nov 22 03:54 log1
-	　 
+
 
 ### 4. 使用“=”设置权限，将文件log1的所属用户的权限全部取消，并重设为只拥有可执行权限
 
-	# ll log1
-	-rw-rw-r--. 2 root root 0 Nov 22 03:54 log1
 	# chmod u=x log1
-	# ll log1
-	---xrw-r--. 2 root root 0 Nov 22 03:54 log1
+
 	
 	
 
 ###  5：对一个目录及其子目录所有文件添加权限
 	
-	将目前目录下的所有文件与子目录皆设为任何人可读取 :
-	chmod -R a+r *
+	#  chmod -R a+r *     将目前目录下的所有文件与子目录设为任何人可读取 
 	
-	指定将目录dir2下的所有文件与子目录皆设为所属用户拥有可执行权限
-	chmod -R u+x dir2
 	
-	# ll dir2
-	total 0
-	-rw-r--r--. 1 root root 0 Nov 26 19:34 log2
-	-rw-r--r--. 1 root root 0 Nov 26 19:33 log3
-	# chmod -R u+x dir2
-	# ll dir2
-	total 0
-	-rwxr--r--. 1 root root 0 Nov 26 19:34 log2
-	-rwxr--r--. 1 root root 0 Nov 26 19:33 log3
+	#  chmod -R u+x dir2     指定将目录dir2下的所有文件与子目录皆设为所属用户拥有可执行权限
 	
-	递归地给dir2目录下所有文件和子目录的属主分配可执行权限
 	
