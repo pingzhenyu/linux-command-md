@@ -11,7 +11,7 @@ chown命令 改变某个文件或目录的所有者和所属的组，该命令�
 
 ###  语法
 
-	chown(选项)(参数)
+	chown [OPTION]... [OWNER][:[GROUP]] FILE...
 
 ###  选项
 
@@ -32,63 +32,19 @@ chown命令 改变某个文件或目录的所有者和所属的组，该命令�
 
 ###  实例
 
-### 1 改变文件的拥有者和群组
-	# ll log1
-	-rwxrwxr-x. 1 root root 0 Nov 20 18:53 log1
+### 1 将log1文件的拥有者设为root，群组设为mail
+	
 	# chown root:mail log1
-	# ll log1
-	-rwxrwxr-x. 1 root mail 0 Nov 20 18:53 log1
 	
-	将log1文件的拥有者设为root，群组设为mail
+### 2. 将log1文件的拥有者和群组均设为root
 
-### 2. 改变文件拥有者和群组
-	# ll log1
-	-rwxrwxr-x. 1 root mail 0 Nov 20 18:53 log1
 	# chown root: log1
-	# ll log1
-	-rwxrwxr-x. 1 root root 0 Nov 20 18:53 log1
 	
-	将log1文件的拥有者和群组均设为root
-
-### 3. 改变文件群组
-
-	# ll log1
-	-rwxrwxr-x. 1 root root 0 Nov 20 18:53 log1
+### 3. 将log1文件的群组由root改为mail
+	
 	# chown :mail log1
-	# ll log1
-	-rwxrwxr-x. 1 root mail 0 Nov 20 18:53 log1
-
-	将log1文件的群组由root改为mail
 	
 ###  4. 改变指定目录以及其子目录下的所有文件的拥有者和群组
 
-	# ll dir2
-	total 0
-	-rwxr--r--. 1 root root 0 Nov 26 19:34 log2
-	-rwxr--r--. 1 root root 0 Nov 26 19:33 log3
 	# chown -R -v root:mail dir2
-	changed ownership of ‘dir2/log3’ from root:root to root:mail
-	changed ownership of ‘dir2/log2’ from root:root to root:mail
-	changed ownership of ‘dir2’ from root:bin to root:mail
-	# ll dir2
-	total 0
-	-rwxr--r--. 1 root mail 0 Nov 26 19:34 log2
-	-rwxr--r--. 1 root mail 0 Nov 26 19:33 log3
-
-###  5.	改变文件的属主用户。
-
-	假设当前目录下有一文件abc，属主为root。将属主改变为ddf，为了查看设置是否成功
-	#	ll abc
-	#	chown -v ddf abc
-	#	ll abc
-
-###  6.	改变文件的属主用户和属组用户。
-	假设当前目录下的文件abc，属主和属组为root，同时将属主和属组更改为ddf
-	#	ll abc
-	#	chown -v ddf:ddf abc
-###  7.	改变文件的属主用户，并指定文件的属组用户为当前登陆账户的所属群组。
-	假设当前目录下存在文件abc，其属主和属组都为ddf，将abc的属主设定为root。
-	同时将其属组设定为当前登陆用户所在的群组。在命令提示符下输入：
-	#	ll abc
-	#	chown -v root: abc
-	#	ll abc
+	
