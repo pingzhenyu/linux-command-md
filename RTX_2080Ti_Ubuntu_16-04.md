@@ -178,37 +178,47 @@ Before issuing the following commands, you'll need to replace x.x and v8.x.x.x w
 Procedure
 Navigate to your <cudnnpath> directory containing the cuDNN Tar file.
 Unzip the cuDNN package.
+```sh
 $ tar -xzvf cudnn-x.x-linux-x64-v8.x.x.x.tgz
+```
+  
 Copy the following files into the CUDA Toolkit directory, and change the file permissions.
+```sh
 $ sudo cp cuda/include/cudnn*.h /usr/local/cuda/include
 $ sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64
 $ sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*
-
+```
 ### 2.3.2. Installing From A Debian File
 Before issuing the following commands, you'll need to replace x.x and 8.x.x.x with your specific CUDA version and cuDNN version and package date.
 About this task
 Procedure
 Navigate to your <cudnnpath> directory containing the cuDNN Debian file.
 Install the runtime library, for example:
+```sh
 sudo dpkg -i libcudnn8_x.x.x-1+cudax.x_amd64.deb
 Install the developer library, for example:
 sudo dpkg -i libcudnn8-dev_8.x.x.x-1+cudax.x_amd64.deb
 Install the code samples and the cuDNN library documentation, for example:
 sudo dpkg -i libcudnn8-samples_8.x.x.x-1+cudax.x_amd64.deb
+```
 
 ### 2.3.3. Installing From An RPM File
 About this task
 Procedure
 Download the rpm package libcudnn*.rpm to the local path.
 Install the rpm package from the local path. This will install the cuDNN libraries.
+```sh
 rpm -ivh libcudnn8-*.x86_64.rpm
 rpm -ivh libcudnn8-devel-*.x86_64.rpm
 rpm -ivh libcudnn8-samples-*.x86_64.rpm
-##2.4. Verifying The cuDNN Install On Linux
+```
+
+## 2.4. Verifying The cuDNN Install On Linux
 About this task
 To verify that cuDNN is installed and is running properly, compile the mnistCUDNN sample located in the /usr/src/cudnn_samples_v8 directory in the Debian file.
 
 Procedure
+```sh
 Copy the cuDNN sample to a writable path.
 $cp -r /usr/src/cudnn_samples_v8/ $HOME
 Go to the writable path.
@@ -217,16 +227,20 @@ Compile the mnistCUDNN sample.
 $make clean && make
 Run the mnistCUDNN sample.
 $ ./mnistCUDNN
+```
 If cuDNN is properly installed and running on your Linux system, you will see a message similar to the following:
 Test passed!
 
 ## 2.5. Upgrading From v7 To v8
 Since version 8 can coexist with previous versions of cuDNN, if the user has an older version of cuDNN such as v6 or v7, installing version 8 will not automatically delete an older revision. Therefore, if the user wants the latest version, install cuDNN version 8 by following the installation steps.
+```sh
 About this task
 To upgrade from v7 to v8 for RHEL, run:
 sudo rpm --upgrade *.rpm
 To upgrade from v7 to v8 for Ubuntu, run:
 sudo dpkg -i libcudnn*.deb
+```
+
 To switch between v7 and v8 installations, issue sudo update-alternatives --config libcudnn and choose the appropriate cuDNN version.
 
 ## 2.6. Troubleshooting
