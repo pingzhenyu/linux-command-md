@@ -97,109 +97,32 @@ tar -jcvf etc.tar.bz2 /etc
 ```
 
 ### 2.	查阅上述 tar包内有哪些文件
-	命令：
-	tar -ztvf log.tar.gz
-	输出：
-	# tar -ztvf log.tar.gz
-	-rw-r--r-- root/root      3743 2018-11-30 09:51 1.log
-	说明：
-	由于我们使用 gzip 压缩的log.tar.gz，所以要查阅log.tar.gz包内的文件时，就得要加上 z 这个参数了。
+```
+tar -ztvf log.tar.gz
+```
+
 ### 3.	将tar 包解压缩
-	# cd test2
-	# ls
-	# tar -zxvf /home/hc/test/log.tar.gz 
-	1.log
-	# ls
-	1.log
-	说明：
-	在预设的情况下，我们可以将压缩档在任何地方解开的,比如此处就是在test2目录下解压了test目录下的log.tar.gz
+```
+tar -cvf etc.tar /etc 
+tar -zcvf etc.tar.gz /etc
+tar -jcvf etc.tar.bz2 /etc  
+
+tar -zcvf etc.tar.gz /etc -C /home
+
+```
+在预设的情况下，我们可以将压缩档在任何地方解开的，-C 这个选项用在解压缩，若要在特定目录解压缩，可以使用这个选项。
 ### 4. 只解压tar包里的部分文件
-	# cd ../test
-	# ls
-	1.log  2.log  3.log  log.tar  log.tar.bz2  log.tar.gz
-	# tar -zcvf log123.tar.gz 1.log 2.log 3.log 
-	1.log
-	2.log
-	3.log
-	# ll
-	total 36
-	-rw-r--r-- 1 root root  3743 Nov 30 09:51 1.log
-	-rw-r--r-- 1 root root  3743 Nov 30 09:51 2.log
-	-rw-r--r-- 1 root root  3743 Nov 30 09:51 3.log
-	-rw-r--r-- 1 root root  1943 Nov 30 10:07 log123.tar.gz
-	-rw-r--r-- 1 root root 10240 Nov 30 10:01 log.tar
-	-rw-r--r-- 1 root root  1810 Nov 30 10:01 log.tar.bz2
-	-rw-r--r-- 1 root root  1817 Nov 30 10:01 log.tar.gz
-	# cd ../test2
-	# ls
-	1.log
-	# tar -ztvf /home/hc/test/log123.tar.gz 
-	-rw-r--r-- root/root      3743 2018-11-30 09:51 1.log
-	-rw-r--r-- root/root      3743 2018-11-30 09:51 2.log
-	-rw-r--r-- root/root      3743 2018-11-30 09:51 3.log
-	# tar -zxvf /home/hc/test/log123.tar.gz 2.log
-	2.log
-	# ls
-	1.log  2.log
-	说明：
-	此处是只解压出了log123.tar.gz包里的2.log文件，我们可以通过 tar -ztvf 来查阅 tar 包内的文件名称
+```	
+tar -jxvf etc.tar.bz2 etc/ucf.conf
+```
+此处是只解压出了etc.tar.bz2包里的etc/ucf.conf文件，可以通过 tar -ztvf 来查阅 tar 包内的文件名称
 ### 5. 在文件夹当中，比某个日期新的文件才备份
-	命令：
-	tar -N "2018/11/30" -zcvf log11.tar.gz .
-	输出：
-	# ll
-	total 0
-	-rw-r--r-- 1 root root 0 Nov 30 10:23 1.log
-	-rw-r--r-- 1 root root 0 Nov 30 10:23 2.log
-	-rw-r--r-- 1 root root 0 Nov 30 10:23 3.log
-	# tar -N "2018/11/30" -zcvf log11.tar.gz ./*
-	tar: Option --after-date: Treating date `2018/11/30' as 2018-11-30 00:00:00
-	./1.log
-	./2.log
-	./3.log
-	# tar -N "2018/12/30" -zcvf log12.tar.gz ./*
-	tar: Option --after-date: Treating date `2018/12/30' as 2018-12-30 00:00:00
-	tar: ./1.log: file is unchanged; not dumped
-	tar: ./2.log: file is unchanged; not dumped
-	tar: ./3.log: file is unchanged; not dumped
-	tar: ./log11.tar.gz: file is unchanged; not dumped
-	# ll
-	total 8
-	-rw-r--r-- 1 root root   0 Nov 30 10:23 1.log
-	-rw-r--r-- 1 root root   0 Nov 30 10:23 2.log
-	-rw-r--r-- 1 root root   0 Nov 30 10:23 3.log
-	-rw-r--r-- 1 root root 128 Nov 30 10:56 log11.tar.gz
-	-rw-r--r-- 1 root root  45 Nov 30 10:57 log12.tar.gz
-	# tar -tzvf log11.tar.gz 
-	-rw-r--r-- root/root         0 2018-11-30 10:23 ./1.log
-	-rw-r--r-- root/root         0 2018-11-30 10:23 ./2.log
-	-rw-r--r-- root/root         0 2018-11-30 10:23 ./3.log
-	# tar -tzvf log12.tar.gz 
-	# 
-	将当前目录下的更新时间比2018-11-30 00:00:00新的文件或目录进行压缩备份
-### 6. 备份文件夹内容时排除部分文件
-	# ls
-	1.log  2.log  3.log  log11.tar.gz  log12.tar.gz
-	# tar --exclude ./log12.tar.gz  -zcvf test.tar.gz ./*
-	./1.log
-	./2.log
-	./3.log
-	./log11.tar.gz
-	# tar -tzvf test.tar.gz 
-	-rw-r--r-- root/root         0 2018-11-30 10:23 ./1.log
-	-rw-r--r-- root/root         0 2018-11-30 10:23 ./2.log
-	-rw-r--r-- root/root         0 2018-11-30 10:23 ./3.log
-	-rw-r--r-- root/root       128 2018-11-30 10:56 ./log11.tar.gz
-	
-### 7. 把/etc目录包括其子目录全部做一归档文件，归档文件名为etcbackup.tar。
-	因为要创建归档文件，所以主选项选择-c。-v选项可以显示该命令在处理每个文件的时候显示详细的处理过程。
-	以etcbackup.tar做为归档文件的名字，则需要-f选项。
-	#	tar -cvf etcbackup.tar /etc
-### 8. 查看实例一中生成etcbackup.tar备份文件的内容，并在标准输出设备上分屏显示。
-	对于备份在其他存储介质上的归档文件，用户可能不清楚其具体文件内容，但是用户又不愿将其所有内容从
-	归档文件中提取出来。此时，可以利用tar工具的-l选项查看归档文件的具体内容。
-	#	tar -tvf etcbackup.tar |more
-### 9. 将打印机假脱机文件整理归档并压缩，并命名为spoolfile.tar.gz。
-	假设打印机假脱机文件文件位于/var/spool中，不仅要创建归档文件还要对归档文件进行压缩，因此需要-z选项，
-	同时需要-f选项。如果用户需要查看归档文件处理过程的报告信息，可以加上-v选项。
-	#	tar czvf spoolfile.tar.gz /var/spool
+```
+tar -N "2018/11/30" -zcvf log11.tar.gz .
+```
+
+
+### 6. 查看实例一中生成etcbackup.tar备份文件的内容，并在标准输出设备上分屏显示。
+```
+tar -tvf etcbackup.tar |more
+```
