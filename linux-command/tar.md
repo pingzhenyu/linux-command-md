@@ -89,11 +89,13 @@ c参数代表create（创建），x参数代表extract（解包），v参数代�
 
 
 ### 1.	将etc文件夹文件全部打包成tar包
-'''
-	tar -cvf etc.tar /etc 
-	tar -zcvf etc.tar.gz /etc
-	tar -jcvf etc.tar.bz2 /etc 	
-'''
+
+```
+tar -cvf etc.tar /etc 
+tar -zcvf etc.tar.gz /etc
+tar -jcvf etc.tar.bz2 /etc  
+```
+
 ### 2.	查阅上述 tar包内有哪些文件
 	命令：
 	tar -ztvf log.tar.gz
