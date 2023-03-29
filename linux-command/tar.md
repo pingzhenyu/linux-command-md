@@ -4,11 +4,9 @@ Linux下的归档使用工具，用来打包和备份
 
 ### 补充说明 ###
 
-**tar命令** 可以为linux的文件和目录创建档案。利用tar，可以为某一特定文件创建档案（备份文件），也可以在档案中改变文件，或者向档案中加入新的文件。tar最初被用来在磁带上创建档案，现在，用户可以在任何设备上创建档案。利用tar命令，可以把一大堆的文件和目录全部打包成一个文件，这对于备份文件或将几个文件组合成为一个文件以便于网络传输是非常有用的。
+**tar命令** tar 是用来建立，还原备份文件的工具程序，它可以加入，解开备份文件内的文件。
 
-首先要弄清两个概念：打包和压缩。打包是指将一大堆文件或目录变成一个总的文件；压缩则是将一个大的文件通过一些压缩算法变成一个小文件。
-
-为什么要区分这两个概念呢？这源于Linux中很多压缩程序只能针对一个文件进行压缩，这样当你想要压缩一大堆文件时，你得先将这一大堆文件先打成一个包（tar命令），然后再用压缩程序进行压缩（gzip bzip2命令）。
+首先要弄清两个概念：打包和压缩。打包是指将一大堆文件或目录变成一个总的文件；压缩则是将一个大的文件通过一些压缩算法变成一个小文件。为什么要区分这两个概念呢？这源于Linux中很多压缩程序只能针对一个文件进行压缩，这样当你想要压缩一大堆文件时，你得先将这一大堆文件先打成一个包（tar命令），然后再用压缩程序进行压缩（gzip bzip2命令）。
 
 
 ###  语法
@@ -51,13 +49,15 @@ Linux下的归档使用工具，用来打包和备份
 
 压缩： zip -r [目标文件名].zip [原文件/目录名]  
 解压： unzip [原文件名].zip  
-注：-r参数代表递归  
+
+-r参数代表递归  
 
 #### tar格式（该格式仅仅打包，不压缩）
 
 打包：tar -cvf [目标文件名].tar [原文件名/目录名]  
 解包：tar -xvf [原文件名].tar  
-注：c参数代表create（创建），x参数代表extract（解包），v参数代表verbose（详细信息），f参数代表filename（文件名），所以f后必须接文件名。  
+
+c参数代表create（创建），x参数代表extract（解包），v参数代表verbose（详细信息），f参数代表filename（文件名），所以f后必须接文件名。  
 
 #### tar.gz格式
 
@@ -84,66 +84,16 @@ Linux下的归档使用工具，用来打包和备份
 解压并解包： tar -jxvf [原文件名].tar.bz2  
 注：小写j代表用bzip2算法来压缩/解压。  
 
-#### tar.xz格式
-
-方式一：利用已经打包好的tar文件，直接用压缩命令：
-
-压缩：xz [原文件名].tar  
-解压：unxz [原文件名].tar.xz  
-方式二：一次性打包并压缩、解压并解包  
-
-打包并压缩： tar -Jcvf [目标文件名].tar.xz [原文件名/目录名]  
-解压并解包： tar -Jxvf [原文件名].tar.xz  
-注：大写J代表用xz算法来压缩/解压。  
-
-#### tar.Z格式（已过时）
-
-方式一：利用已经打包好的tar文件，直接用压缩命令：
-
-压缩：compress [原文件名].tar  
-解压：uncompress [原文件名].tar.Z  
-方式二：一次性打包并压缩、解压并解包  
-
-打包并压缩： tar -Zcvf [目标文件名].tar.Z [原文件名/目录名]  
-解压并解包： tar -Zxvf [原文件名].tar.Z  
-注：大写Z代表用ncompress算法来压缩/解压。另，ncompress是早期Unix系统的压缩格式，但由于ncompress的压缩率太低，现已过时。  
-
-#### jar格式
-
-压缩：jar -cvf [目标文件名].jar [原文件名/目录名]  
-解压：jar -xvf [原文件名].jar  
-
-注：如果是打包的是Java类库，并且该类库中存在主类，那么需要写一个META-INF/MANIFEST.MF配置文件，内容如下：  
-
-
-
 
 ###  实例
 
 
-### 1.	将文件全部打包成tar包
-	命令：
-	tar -cvf log.tar 1.log 
-	tar -zcvf log.tar.gz 1.log
-	tar -jcvf log.tar.bz2 1.log 
-	输出：
-	# ll 1.log 
-	-rw-r--r-- 1 root root 3743 Nov 30 09:51 1.log
-	# tar -cvf log.tar 1.log 
-	1.log
-	# tar -zcvf log.tar.gz 1.log 
-	1.log
-	# tar -jcvf log.tar.bz2 1.log 
-	1.log
-	# ll *.tar*
-	-rw-r--r-- 1 root root 10240 Nov 30 09:53 log.tar
-	-rw-r--r-- 1 root root  1798 Nov 30 09:55 log.tar.bz2
-	-rw-r--r-- 1 root root  1816 Nov 30 09:54 log.tar.gz
-	说明：
-	tar -cvf log.tar 1.log 仅打包，不压缩！
-	tar -zcvf log.tar.gz 1.log 打包后，以 gzip 压缩
-	tar -jcvf log.tar.bz2 1.log 打包后，以 bzip2 压缩
-	在参数 f 之后的文件档名是自己取的，我们习惯上都用 .tar 来作为辨识。 如果加 z 参数，则以 .tar.gz 或 .tgz 来代表 gzip 压缩过的 tar包； 如果加 j 参数，则以 .tar.bz2 来作为tar包名。
+### 1.	将etc文件夹文件全部打包成tar包
+'''
+	tar -cvf etc.tar /etc 
+	tar -zcvf etc.tar.gz /etc
+	tar -jcvf etc.tar.bz2 /etc 	
+'''
 ### 2.	查阅上述 tar包内有哪些文件
 	命令：
 	tar -ztvf log.tar.gz
